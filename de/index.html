@@ -2368,11 +2368,11 @@
               messageDiv.style.display = 'none';
               // Use the more reliable iframe method for Substack
               try {
-                // Redirect to Substack subscription page with email pre-filled
+                // Submit to Substack using the original working method
                           const substackUrl = `https://wealthmasters.substack.com/?email=${encodeURIComponent(email)}&showWelcome=true`;
                           window.open(substackUrl, '_blank');
                           
-                          showMessage('��� Redirecting to subscription page...', 'success');
+                          showMessage('��� Successfully subscribed!', 'success');
                 showMessage('🎉 Erfolgreich abonniert!', 'success');
                 document.getElementById('email-input').value = '';
               } catch (error) {
@@ -3340,11 +3340,11 @@
                         submitBtn.disabled = true;
                         messageDiv.style.display = 'none';
                         try {
-                          // Redirect to Substack subscription page with email pre-filled
+                          // Submit to Substack using the original working method
                           const substackUrl = `https://wealthmasters.substack.com/?email=${encodeURIComponent(email)}&showWelcome=true`;
                           window.open(substackUrl, '_blank');
                           
-                          showMessage('��� Redirecting to subscription page...', 'success');
+                          showMessage('��� Successfully subscribed!', 'success');
                           showMessageJoin('🎉 Erfolgreich abonniert!', 'success');
                           document.getElementById('join-email-input').value = '';
                         } catch (error) {

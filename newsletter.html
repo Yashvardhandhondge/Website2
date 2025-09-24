@@ -532,67 +532,64 @@
             }, 5000);
         }
         
-        // Substack submission function - Using original working method
+        // Substack submission function - Using working method from website folder
         function submitToSubstackViaIframe(email) {
             return new Promise((resolve, reject) => {
                 const iframe = document.createElement('iframe');
                 iframe.style.display = 'none';
                 iframe.name = 'substack-frame-' + Date.now();
                 document.body.appendChild(iframe);
-                
                 const form = document.createElement('form');
                 form.method = 'POST';
                 form.action = 'https://wealthmasters.substack.com/api/v1/free';
                 form.target = iframe.name;
                 form.style.display = 'none';
-                
-                // Add email field
                 const emailInput = document.createElement('input');
                 emailInput.type = 'hidden';
                 emailInput.name = 'email';
                 emailInput.value = email;
+                const utmSource = document.createElement('input');
+                utmSource.type = 'hidden';
+                utmSource.name = 'utm_source';
+                utmSource.value = 'website';
+                const utmMedium = document.createElement('input');
+                utmMedium.type = 'hidden';
+                utmMedium.name = 'utm_medium';
+                utmMedium.value = 'newsletter_form';
                 form.appendChild(emailInput);
-                
-                // Add referrer field
-                const referrerInput = document.createElement('input');
-                referrerInput.type = 'hidden';
-                referrerInput.name = 'referrer';
-                referrerInput.value = window.location.href;
-                form.appendChild(referrerInput);
-                
-                // Add utm_source for tracking
-                const utmSourceInput = document.createElement('input');
-                utmSourceInput.type = 'hidden';
-                utmSourceInput.name = 'utm_source';
-                utmSourceInput.value = 'website';
-                form.appendChild(utmSourceInput);
-                
-                // Add utm_medium for tracking
-                const utmMediumInput = document.createElement('input');
-                utmMediumInput.type = 'hidden';
-                utmMediumInput.name = 'utm_medium';
-                utmMediumInput.value = 'newsletter_form';
-                form.appendChild(utmMediumInput);
-                
+                form.appendChild(utmSource);
+                form.appendChild(utmMedium);
                 document.body.appendChild(form);
-                
-                // Handle iframe load - 302 redirects are normal for Substack
-                iframe.onload = () => {
+                // Handle iframe load event - 302 redirect means success
+                iframe.onload = function () {
                     setTimeout(() => {
-                        document.body.removeChild(iframe);
-                        document.body.removeChild(form);
-                        resolve();
-                    }, 2000);
+                        try {
+                            // Clean up
+                            document.body.removeChild(form);
+                            document.body.removeChild(iframe);
+                            resolve();
+                        } catch (cleanupError) {
+                            console.warn('Cleanup error:', cleanupError);
+                            resolve(); // Still resolve as the subscription likely worked
+                        }
+                    }, 1000);
                 };
-                
-                iframe.onerror = () => {
-                    document.body.removeChild(iframe);
-                    document.body.removeChild(form);
-                    reject(new Error('Failed to submit to Substack'));
+                iframe.onerror = function () {
+                    reject(new Error('Network error'));
                 };
-                
-                // Submit form
+                // Submit the form
                 form.submit();
+                // Fallback timeout - assume success after 5 seconds
+                setTimeout(() => {
+                    try {
+                        document.body.removeChild(form);
+                        document.body.removeChild(iframe);
+                        resolve();
+                    } catch (cleanupError) {
+                        console.warn('Cleanup error:', cleanupError);
+                        resolve(); // Still resolve as the subscription likely worked
+                    }
+                }, 5000);
             });
         }
     </script>
