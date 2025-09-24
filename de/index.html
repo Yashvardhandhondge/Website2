@@ -2369,8 +2369,7 @@
               // Use the more reliable iframe method for Substack
               try {
                 // Submit to Substack using the original working method
-                          const substackUrl = `https://wealthmasters.substack.com/?email=${encodeURIComponent(email)}&showWelcome=true`;
-                          window.open(substackUrl, '_blank');
+                          await submitToSubstackViaIframe(email);
                           
                           showMessage('��� Successfully subscribed!', 'success');
                 showMessage('🎉 Erfolgreich abonniert!', 'success');
@@ -3341,8 +3340,7 @@
                         messageDiv.style.display = 'none';
                         try {
                           // Submit to Substack using the original working method
-                          const substackUrl = `https://wealthmasters.substack.com/?email=${encodeURIComponent(email)}&showWelcome=true`;
-                          window.open(substackUrl, '_blank');
+                          await submitToSubstackViaIframe(email);
                           
                           showMessage('��� Successfully subscribed!', 'success');
                           showMessageJoin('🎉 Erfolgreich abonniert!', 'success');
