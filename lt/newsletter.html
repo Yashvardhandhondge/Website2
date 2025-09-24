@@ -489,9 +489,11 @@
             submitBtn.disabled = true;
             
             try {
-                // Submit to Substack
-                await submitToSubstackViaIframe(email);
-                alert('🎉 Sėkmingai užsiprenumeravote! Patikrinkite savo el. paštą dėl elektroninės knygos.');
+                // Redirect to Substack subscription page with email pre-filled
+                const substackUrl = `https://wealthmasters.substack.com/?email=${encodeURIComponent(email)}&showWelcome=true`;
+                window.open(substackUrl, '_blank');
+                
+                alert('🎉 Nukreipiama į prenumeratos puslapį...');
                 
                 // Clear form
                 document.querySelector('#ebook-form input[name="name"]').value = '';

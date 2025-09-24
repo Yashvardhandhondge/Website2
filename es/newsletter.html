@@ -489,9 +489,11 @@
             submitBtn.disabled = true;
             
             try {
-                // Submit to Substack
-                await submitToSubstackViaIframe(email);
-                alert('🎉 ¡Suscrito exitosamente! Revise su correo electrónico para el ebook.');
+                // Redirect to Substack subscription page with email pre-filled
+                const substackUrl = `https://wealthmasters.substack.com/?email=${encodeURIComponent(email)}&showWelcome=true`;
+                window.open(substackUrl, '_blank');
+                
+                alert('🎉 Redirigiendo a la página de suscripción...');
                 
                 // Clear form
                 document.querySelector('#ebook-form input[name="name"]').value = '';

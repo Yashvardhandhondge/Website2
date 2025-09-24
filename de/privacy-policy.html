@@ -550,7 +550,11 @@
                         submitBtn.disabled = true;
                         messageDiv.style.display = 'none';
                         try {
-                          await submitToSubstackViaIframe(email);
+                          // Redirect to Substack subscription page with email pre-filled
+                const substackUrl = `https://wealthmasters.substack.com/?email=${encodeURIComponent(email)}&showWelcome=true`;
+                window.open(substackUrl, '_blank');
+                
+                showMessage('🎉 Redirecting to subscription page...', 'success');
                           showMessageJoin('🎉 Erfolgreich abonniert!', 'success');
                           document.getElementById('join-email-input').value = '';
                         } catch (error) {

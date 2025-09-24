@@ -494,9 +494,11 @@
             messageDiv.style.display = 'none';
             
             try {
-                // Submit to Substack
-                await submitToSubstackViaIframe(email);
-                showMessage('🎉 Successfully subscribed! Check your email for the ebook.', 'success');
+                // Redirect to Substack subscription page with email pre-filled
+                const substackUrl = `https://wealthmasters.substack.com/?email=${encodeURIComponent(email)}&showWelcome=true`;
+                window.open(substackUrl, '_blank');
+                
+                showMessage('🎉 Redirecting to subscription page...', 'success');
                 
                 // Clear form
                 document.getElementById('ebook-name').value = '';
@@ -532,21 +534,23 @@
             }, 5000);
         }
         
-        // Substack submission function - Updated with proper endpoint
+        // Substack submission function - Using official embed method
         function submitToSubstackViaIframe(email) {
             return new Promise((resolve, reject) => {
+                // Create iframe for Substack embed
                 const iframe = document.createElement('iframe');
                 iframe.style.display = 'none';
                 iframe.name = 'substack-frame-' + Date.now();
                 document.body.appendChild(iframe);
                 
+                // Create form that submits to Substack's official embed endpoint
                 const form = document.createElement('form');
                 form.method = 'POST';
-                form.action = 'https://wealthmasters.substack.com/api/v1/subscribe';
+                form.action = 'https://wealthmasters.substack.com/embed';
                 form.target = iframe.name;
                 form.style.display = 'none';
                 
-                // Add required fields for Substack
+                // Add email field
                 const emailInput = document.createElement('input');
                 emailInput.type = 'hidden';
                 emailInput.name = 'email';
@@ -576,13 +580,13 @@
                 
                 document.body.appendChild(form);
                 
-                // Handle iframe load - 302 redirects are normal for Substack
+                // Handle iframe load
                 iframe.onload = () => {
                     setTimeout(() => {
                         document.body.removeChild(iframe);
                         document.body.removeChild(form);
                         resolve();
-                    }, 2000); // Increased timeout for redirect handling
+                    }, 2000);
                 };
                 
                 iframe.onerror = () => {
