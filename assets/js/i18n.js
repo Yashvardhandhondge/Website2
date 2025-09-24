@@ -9,9 +9,9 @@ const translations = {
 
         // Hero Section
         cta: "Join +1,000 daily readers for 100% free",
-        hero_heading: "Join 1% Of Traders Club And Get",
-        hero_highlight: "Full Access",
-        hero_end: "To VIP Strategies",
+        hero_heading: "Get a ",
+        hero_highlight: "Smart Exposure",
+        hero_end: " into crypto. Consistent crypto portfolio growth.",
         subtext: "We help to earn consistent returns with crypto and manage the risks. Start building your crypto portfolio today",
 
         // Fear & Greed Index Chart
@@ -100,9 +100,9 @@ const translations = {
 
         // Hero Section
         cta: "Únete a más de 1,000 lectores diarios 100% gratis",
-        hero_heading: "Únete al 1 % del Club de Traders y obtén",
-        hero_highlight: "acceso completo",
-        hero_end: "a estrategias VIP",
+        hero_heading: "Obtén una ",
+        hero_highlight: "Exposición Inteligente",
+        hero_end: " en crypto. Crecimiento consistente del portafolio crypto.",
         subtext: "Te ayudamos a obtener rendimientos constantes con criptomonedas y a gestionar los riesgos. Comienza hoy a construir tu portafolio cripto",
 
         // Fear & Greed Index Chart
@@ -191,9 +191,9 @@ const translations = {
 
         // Hero Section
         cta: "Schließe dich über 1.000 täglichen Lesern kostenlos an",
-        hero_heading: "Tritt dem 1 %-Traders-Club bei und erhalte",
-        hero_highlight: "vollen Zugang",
-        hero_end: "zu exklusiven VIP-Strategien",
+        hero_heading: "Erhalte eine ",
+        hero_highlight: "Intelligente Exposition",
+        hero_end: " in Krypto. Konsistentes Krypto-Portfolio-Wachstum.",
         subtext: "Wir helfen dir, mit Krypto stabile Renditen zu erzielen und Risiken zu managen. Starte noch heute mit dem Aufbau deines Krypto-Portfolios",
 
         // Fear & Greed Index Chart
@@ -282,9 +282,9 @@ const translations = {
 
         // Hero Section
         cta: "Prisijunk prie daugiau nei 1 000 kasdienių skaitytojų visiškai nemokamai",
-        hero_heading: "Prisijunk prie 1 % prekiautojų klubo ir gauk",
-        hero_highlight: "pilną prieigą",
-        hero_end: "prie VIP strategijų",
+        hero_heading: "Gauk ",
+        hero_highlight: "Protingą Ekspoziciją",
+        hero_end: " į kripto. Nuoseklus kripto portfelio augimas.",
         subtext: "Padėsime tau nuosekliai uždirbti iš kriptovaliutų ir valdyti riziką. Pradėk kurti savo kripto portfelį jau šiandien",
 
         // Fear & Greed Index Chart
