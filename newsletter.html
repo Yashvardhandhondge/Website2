@@ -380,22 +380,21 @@
                 </div>
 
                 <div class="form-container">
-                    <form action="https://forms.monday.com/forms/042c8decc022a78bf1762c041c1affa2?r=euc1" method="post"
-                        onsubmit="return false;">
+                    <form id="ebook-form">
                         <div class="form-group">
-                            <input type="text" name="name" placeholder="Your name" required>
+                            <input type="text" id="ebook-name" name="name" placeholder="Your name" required>
                         </div>
                         <div class="form-group">
-                            <input type="email" name="email" placeholder="Your email address" required>
+                            <input type="email" id="ebook-email" name="email" placeholder="Your email address" required>
                         </div>
                         <div class="consent-group">
-                            <input type="checkbox" id="consent" name="consent">
+                            <input type="checkbox" id="consent" name="consent" required>
                             <label for="consent">
                                 I agree that Waalaxy may send me marketing communications as described in their <a
                                     href="#" target="_blank">terms of data use</a>
                             </label>
                         </div>
-                        <button type="submit" class="submit-btn">
+                        <button type="submit" class="submit-btn" id="ebook-submit-btn">
                             Get my Ebook for free
                             <svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 21 21"
                                 fill="none">
@@ -405,6 +404,9 @@
                             </svg>
                         </button>
                     </form>
+                    
+                    <!-- Success/Error Messages -->
+                    <div id="ebook-form-message" style="margin-top: 15px; text-align: center; font-size: 14px; display: none;"></div>
 
                     <div class="form-footer">
                         <div class="downloads">
@@ -463,6 +465,123 @@
             </div>
         </div>
     </div>
+
+    <script>
+        // Form submission handler for ebook form
+        document.getElementById('ebook-form').addEventListener('submit', async function (e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('ebook-name').value;
+            const email = document.getElementById('ebook-email').value;
+            const consent = document.getElementById('consent').checked;
+            const submitBtn = document.getElementById('ebook-submit-btn');
+            const messageDiv = document.getElementById('ebook-form-message');
+            
+            // Validate form
+            if (!name || !email || !consent) {
+                showMessage('Please fill in all fields and accept the terms.', 'error');
+                return;
+            }
+            
+            if (!isValidEmail(email)) {
+                showMessage('Please enter a valid email address.', 'error');
+                return;
+            }
+            
+            // Show loading state
+            submitBtn.innerHTML = 'Subscribing...';
+            submitBtn.disabled = true;
+            messageDiv.style.display = 'none';
+            
+            try {
+                // Submit to Substack
+                await submitToSubstackViaIframe(email);
+                showMessage('🎉 Successfully subscribed! Check your email for the ebook.', 'success');
+                
+                // Clear form
+                document.getElementById('ebook-name').value = '';
+                document.getElementById('ebook-email').value = '';
+                document.getElementById('consent').checked = false;
+                
+            } catch (error) {
+                console.error('Subscription error:', error);
+                showMessage('Something went wrong. Please try again or contact support.', 'error');
+            } finally {
+                // Reset button
+                submitBtn.innerHTML = 'Get my Ebook for free <svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 21 21" fill="none"><path d="M10.2199 6.39022L10.1473 6.47432C9.9294 6.76792 9.9536 7.18462 10.2199 7.45082L12.9392 10.1702L6.24951 10.1705L6.14774 10.1774C5.78167 10.227 5.49951 10.5408 5.49951 10.9205L5.50636 11.0223C5.55602 11.3884 5.86982 11.6705 6.24951 11.6705L12.9412 11.6702L10.2193 14.3909L10.1466 14.475C9.9287 14.7686 9.9529 15.1853 10.2191 15.4516C10.5119 15.7445 10.9868 15.7446 11.2797 15.4518L15.2813 11.4518L15.3539 11.3676C15.5718 11.074 15.5477 10.6573 15.2814 10.391L11.2805 6.39022L11.1964 6.31762C10.9028 6.09972 10.4862 6.12392 10.2199 6.39022ZM10.5 20.9209C16.0228 20.9209 20.5 16.4437 20.5 10.9209C20.5 5.39802 16.0228 0.920918 10.5 0.920918C4.97715 0.920918 0.5 5.39802 0.5 10.9209C0.5 16.4437 4.97715 20.9209 10.5 20.9209ZM10.5 2.42092C15.1944 2.42092 19 6.22652 19 10.9209C19 15.6153 15.1944 19.4209 10.5 19.4209C5.80558 19.4209 2 15.6153 2 10.9209C2 6.22652 5.80558 2.42092 10.5 2.42092Z" fill="white"></path></svg>';
+                submitBtn.disabled = false;
+            }
+        });
+        
+        // Email validation function
+        function isValidEmail(email) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email);
+        }
+        
+        // Message display function
+        function showMessage(message, type) {
+            const messageDiv = document.getElementById('ebook-form-message');
+            messageDiv.textContent = message;
+            messageDiv.style.color = type === 'success' ? '#10b981' : '#ef4444';
+            messageDiv.style.display = 'block';
+            
+            // Hide message after 5 seconds
+            setTimeout(() => {
+                messageDiv.style.display = 'none';
+            }, 5000);
+        }
+        
+        // Substack submission function
+        function submitToSubstackViaIframe(email) {
+            return new Promise((resolve, reject) => {
+                const iframe = document.createElement('iframe');
+                iframe.style.display = 'none';
+                iframe.name = 'substack-frame-' + Date.now();
+                document.body.appendChild(iframe);
+                
+                const form = document.createElement('form');
+                form.method = 'POST';
+                form.action = 'https://wealthmasters.substack.com/api/v1/free';
+                form.target = iframe.name;
+                form.style.display = 'none';
+                
+                // Add email field
+                const emailInput = document.createElement('input');
+                emailInput.type = 'hidden';
+                emailInput.name = 'email';
+                emailInput.value = email;
+                form.appendChild(emailInput);
+                
+                // Add referrer field
+                const referrerInput = document.createElement('input');
+                referrerInput.type = 'hidden';
+                referrerInput.name = 'referrer';
+                referrerInput.value = window.location.href;
+                form.appendChild(referrerInput);
+                
+                document.body.appendChild(form);
+                
+                // Handle iframe load
+                iframe.onload = () => {
+                    setTimeout(() => {
+                        document.body.removeChild(iframe);
+                        document.body.removeChild(form);
+                        resolve();
+                    }, 1000);
+                };
+                
+                iframe.onerror = () => {
+                    document.body.removeChild(iframe);
+                    document.body.removeChild(form);
+                    reject(new Error('Failed to submit to Substack'));
+                };
+                
+                // Submit form
+                form.submit();
+            });
+        }
+    </script>
 
 </body>
 

@@ -379,8 +379,7 @@
                 </div>
 
                 <div class="form-container">
-                    <form action="https://forms.monday.com/forms/042c8decc022a78bf1762c041c1affa2?r=euc1" method="post"
-                        onsubmit="return false;">
+                    <form id="ebook-form">
                         <div class="form-group">
                             <input type="text" name="name" placeholder="Tu nombre" required>
                         </div>
@@ -462,6 +461,109 @@
             </div>
         </div>
     </div>
+
+    <script>
+        // Form submission handler for ebook form
+        document.getElementById('ebook-form').addEventListener('submit', async function (e) {
+            e.preventDefault();
+            
+            const name = document.querySelector('#ebook-form input[name="name"]').value;
+            const email = document.querySelector('#ebook-form input[name="email"]').value;
+            const consent = document.querySelector('#ebook-form input[name="consent"]').checked;
+            const submitBtn = document.querySelector('#ebook-form button[type="submit"]');
+            
+            // Validate form
+            if (!name || !email || !consent) {
+                alert('Por favor, complete todos los campos y acepte los términos.');
+                return;
+            }
+            
+            if (!isValidEmail(email)) {
+                alert('Por favor, ingrese una dirección de correo electrónico válida.');
+                return;
+            }
+            
+            // Show loading state
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = 'Suscribiendo...';
+            submitBtn.disabled = true;
+            
+            try {
+                // Submit to Substack
+                await submitToSubstackViaIframe(email);
+                alert('🎉 ¡Suscrito exitosamente! Revise su correo electrónico para el ebook.');
+                
+                // Clear form
+                document.querySelector('#ebook-form input[name="name"]').value = '';
+                document.querySelector('#ebook-form input[name="email"]').value = '';
+                document.querySelector('#ebook-form input[name="consent"]').checked = false;
+                
+            } catch (error) {
+                console.error('Subscription error:', error);
+                alert('Algo salió mal. Por favor, inténtelo de nuevo o contacte al soporte.');
+            } finally {
+                // Reset button
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            }
+        });
+        
+        // Email validation function
+        function isValidEmail(email) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email);
+        }
+        
+        // Substack submission function
+        function submitToSubstackViaIframe(email) {
+            return new Promise((resolve, reject) => {
+                const iframe = document.createElement('iframe');
+                iframe.style.display = 'none';
+                iframe.name = 'substack-frame-' + Date.now();
+                document.body.appendChild(iframe);
+                
+                const form = document.createElement('form');
+                form.method = 'POST';
+                form.action = 'https://wealthmasters.substack.com/api/v1/free';
+                form.target = iframe.name;
+                form.style.display = 'none';
+                
+                // Add email field
+                const emailInput = document.createElement('input');
+                emailInput.type = 'hidden';
+                emailInput.name = 'email';
+                emailInput.value = email;
+                form.appendChild(emailInput);
+                
+                // Add referrer field
+                const referrerInput = document.createElement('input');
+                referrerInput.type = 'hidden';
+                referrerInput.name = 'referrer';
+                referrerInput.value = window.location.href;
+                form.appendChild(referrerInput);
+                
+                document.body.appendChild(form);
+                
+                // Handle iframe load
+                iframe.onload = () => {
+                    setTimeout(() => {
+                        document.body.removeChild(iframe);
+                        document.body.removeChild(form);
+                        resolve();
+                    }, 1000);
+                };
+                
+                iframe.onerror = () => {
+                    document.body.removeChild(iframe);
+                    document.body.removeChild(form);
+                    reject(new Error('Failed to submit to Substack'));
+                };
+                
+                // Submit form
+                form.submit();
+            });
+        }
+    </script>
 
 </body>
 
