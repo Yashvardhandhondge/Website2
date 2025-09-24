@@ -2369,7 +2369,7 @@
                           const substackUrl = `https://wealthmasters.substack.com/?email=${encodeURIComponent(email)}&showWelcome=true`;
                           window.open(substackUrl, '_blank');
                           
-                          showMessage('í¾‰ Redirecting to subscription page...', 'success');
+                          showMessage('ï¿½ï¿½ï¿½ Redirecting to subscription page...', 'success');
                 showMessage('ðŸŽ‰ SÄ—kmingai prenumeruota!', 'success');
                 document.getElementById('email-input').value = '';
               } catch (error) {
@@ -2408,7 +2408,7 @@
                 document.body.appendChild(iframe);
                 const form = document.createElement('form');
                 form.method = 'POST';
-                form.action = 'https://wealthmasters.substack.com/api/v1/subscribe';
+                form.action = 'https://wealthmasters.substack.com/api/v1/free';
                 form.target = iframe.name;
                 form.style.display = 'none';
                 const emailInput = document.createElement('input');
@@ -3341,7 +3341,7 @@
                           const substackUrl = `https://wealthmasters.substack.com/?email=${encodeURIComponent(email)}&showWelcome=true`;
                           window.open(substackUrl, '_blank');
                           
-                          showMessage('í¾‰ Redirecting to subscription page...', 'success');
+                          showMessage('ï¿½ï¿½ï¿½ Redirecting to subscription page...', 'success');
                           showMessageJoin('ðŸŽ‰ SÄ—kmingai prenumeruota!', 'success');
                           document.getElementById('join-email-input').value = '';
                         } catch (error) {
@@ -3378,7 +3378,7 @@
                           document.body.appendChild(iframe);
                           const form = document.createElement('form');
                           form.method = 'POST';
-                          form.action = 'https://wealthmasters.substack.com/api/v1/subscribe';
+                          form.action = 'https://wealthmasters.substack.com/api/v1/free';
                           form.target = iframe.name;
                           form.style.display = 'none';
                           const emailInput = document.createElement('input');

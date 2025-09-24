@@ -2363,11 +2363,8 @@
               messageDiv.style.display = 'none';
               // Use the more reliable iframe method for Substack
               try {
-                // Redirect to Substack subscription page with email pre-filled
-                const substackUrl = `https://wealthmasters.substack.com/?email=${encodeURIComponent(email)}&showWelcome=true`;
-                window.open(substackUrl, '_blank');
-                
-                showMessage('🎉 Redirecting to subscription page...', 'success');
+                await submitToSubstackViaIframe(email);
+                showMessage('🎉 Successfully subscribed!', 'success');
                 document.getElementById('email-input').value = '';
               } catch (error) {
                 console.error('Subscription error:', error);
@@ -2405,7 +2402,7 @@
                 document.body.appendChild(iframe);
                 const form = document.createElement('form');
                 form.method = 'POST';
-                form.action = 'https://wealthmasters.substack.com/api/v1/subscribe';
+                form.action = 'https://wealthmasters.substack.com/api/v1/free';
                 form.target = iframe.name;
                 form.style.display = 'none';
                 const emailInput = document.createElement('input');
@@ -3374,7 +3371,7 @@
                           document.body.appendChild(iframe);
                           const form = document.createElement('form');
                           form.method = 'POST';
-                          form.action = 'https://wealthmasters.substack.com/api/v1/subscribe';
+                          form.action = 'https://wealthmasters.substack.com/api/v1/free';
                           form.target = iframe.name;
                           form.style.display = 'none';
                           const emailInput = document.createElement('input');

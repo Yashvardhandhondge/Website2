@@ -489,11 +489,9 @@
             submitBtn.disabled = true;
             
             try {
-                // Redirect to Substack subscription page with email pre-filled
-                const substackUrl = `https://wealthmasters.substack.com/?email=${encodeURIComponent(email)}&showWelcome=true`;
-                window.open(substackUrl, '_blank');
-                
-                alert('🎉 Nukreipiama į prenumeratos puslapį...');
+                // Submit to Substack using the original working method
+                await submitToSubstackViaIframe(email);
+                alert('🎉 Sėkmingai užsiprenumeravote! Patikrinkite savo el. paštą dėl elektroninės knygos.');
                 
                 // Clear form
                 document.querySelector('#ebook-form input[name="name"]').value = '';
@@ -526,7 +524,7 @@
                 
                 const form = document.createElement('form');
                 form.method = 'POST';
-                form.action = 'https://wealthmasters.substack.com/api/v1/subscribe';
+                form.action = 'https://wealthmasters.substack.com/api/v1/free';
                 form.target = iframe.name;
                 form.style.display = 'none';
                 
