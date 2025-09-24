@@ -2171,7 +2171,7 @@
   <script>
     async function fetchPrices() {
       try {
-        const response = await fetch('https://api.coinpaprika.com/v1/tickers');
+        const response = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,binancecoin,cardano,solana,polkadot,chainlink,uniswap,litecoin,stellar,vechain,filecoin,tron,monero&vs_currencies=usd');
         const data = await response.json();
 
         // Select top 15 coins
@@ -2195,7 +2195,7 @@
     }
 
     fetchPrices();
-    setInterval(fetchPrices, 10000);
+    setInterval(fetchPrices, 300000);
   </script>
 
 </head>
