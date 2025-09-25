@@ -77,7 +77,7 @@ const translations = {
         faq_55: "In 2025, Wealth Masters ranks among the best crypto signal providers for its 70%+ accuracy, crypto signal app, automated bot, and dedicated Telegram group for France and European traders.",
 
         // Footer
-        footer_tagline: "Premium cryptocurrency signals, market analysis, and trading strategies for investors in France and Europe building long-term crypto wealth.",
+        footer_tagline: "Join Wealth Masters for expert crypto market analysis, VIP strategies, and insights to grow your passive income.",
         footer_heading: "Explore",
         footer_home: "Home",
         footer_about: "About Us",
